@@ -9,7 +9,7 @@
 </section>
 
 @if ($portfolios->isEmpty())
-    <section class="empty-state"><span class="empty-icon">✳</span><h2>Your first portfolio starts here</h2><p>Add your story and choose a template when you are ready.</p><a class="button button-primary" href="{{ route('portfolios.create') }}">Create portfolio</a></section>
+    <section class="empty-state"><span class="empty-icon" aria-hidden="true"></span><h2>Your first portfolio starts here</h2><p>Add your story and choose a template when you are ready.</p><a class="button button-primary" href="{{ route('portfolios.create') }}">Create portfolio</a></section>
 @else
     <div class="portfolio-grid">
         @foreach ($portfolios as $portfolio)

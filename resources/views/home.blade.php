@@ -18,7 +18,7 @@
         <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
         <div class="art-card art-back"><span>01 / PROJECT</span><div class="art-lines"><i></i><i></i><i></i></div><div class="art-shape"></div></div>
         <div class="art-card art-front"><div class="art-avatar">S</div><span class="art-label">YOUR STORY</span><strong>Ideas into<br>impact.</strong><div class="art-tag">PORTFOLIO / 2026</div></div>
-        <span class="art-spark spark-one">✳</span><span class="art-spark spark-two">✦</span>
+        <span class="art-spark spark-one"></span><span class="art-spark spark-two"></span>
     </div>
 </section>
 

@@ -39,6 +39,7 @@ class PortfolioRequest extends FormRequest
             'projects.*.title' => ['nullable', 'string', 'max:180'],
             'projects.*.description' => ['nullable', 'string', 'max:3000'],
             'projects.*.project_url' => ['nullable', 'url', 'max:2048'],
+            'projects.*.tags' => ['nullable', 'string', 'max:500'],
             'projects.*.screenshot' => ['nullable', 'image', 'max:5120'],
             'projects.*.screenshot_path' => ['nullable', 'string', 'max:1024'],
             'work_experience' => ['nullable', 'array', 'max:20'],

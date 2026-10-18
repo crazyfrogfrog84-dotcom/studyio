@@ -184,9 +184,17 @@ class PortfolioController extends Controller
                 continue;
             }
             $path = $projectFiles[$index] ?? ($row['screenshot_path'] ?? null);
+            $tags = collect(explode(',', $row['tags'] ?? ''))
+                ->map(fn ($tag) => trim($tag))
+                ->filter()
+                ->unique()
+                ->take(8)
+                ->values()
+                ->all();
             $portfolio->projects()->create([
                 ...Arr::only($row, ['title', 'description', 'project_url']),
                 'screenshot_path' => $path,
+                'tags' => $tags,
                 'sort_order' => $portfolio->projects()->count(),
             ]);
         }

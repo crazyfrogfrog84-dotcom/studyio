@@ -21,3 +21,19 @@ document.addEventListener('click', (event) => {
         removeButton.closest('.repeat-card')?.remove();
     }
 });
+
+const modernLayout = document.querySelector('.modern-layout');
+const modernSections = modernLayout?.querySelectorAll('.modern-section');
+
+if (modernLayout && modernSections?.length && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    modernLayout.classList.add('has-scroll-reveal');
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -28px 0px' });
+
+    modernSections.forEach((section) => revealObserver.observe(section));
+}
