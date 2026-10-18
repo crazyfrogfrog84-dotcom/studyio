@@ -29,7 +29,7 @@ StuDyIo helps students create an online portfolio from their education, skills, 
 
 Supabase (PostgreSQL), project **StuDyIo**, region **South Asia (Mumbai, ap-south-1)**. The app connects through the Supabase session pooler. Database credentials and the server-side Supabase Storage key are configured through environment variables and are not stored in this repository.
 
-## Hosting / Deployment Platform
+## Hosting/Deployment Platform
 
 Render Web Service using Docker on the Free instance tier. After a period of inactivity, the first load can take about a minute while the service wakes.
 
@@ -252,7 +252,7 @@ Deleting a user deletes their portfolios and the linked education, skills, proje
 
 ## Screenshots of the System
 
-Screenshots were captured from the published site using the seeded demo portfolio. The Supabase Table Editor capture shows the three public template rows.
+The public pages are captured from the published site. Signed-in portfolio screens use a local seeded demo portfolio with fictional details; no private portfolio rows are shown. The Supabase Table Editor capture shows only the three public template rows.
 
 **Home**
 
@@ -269,6 +269,8 @@ Screenshots were captured from the published site using the seeded demo portfoli
 **Forgot Password**
 
 ![StuDyIo forgot password page](docs/screenshots/forgot-password.jpg)
+
+If a reset email does not arrive, check your spam or junk folder.
 
 **Reset Password**
 
@@ -317,15 +319,3 @@ Screenshots were captured from the published site using the seeded demo portfoli
 ## Published Website URL
 
 [https://studyio-portfolio.onrender.com](https://studyio-portfolio.onrender.com)
-
-## Testing the system
-
-If a password reset email does not arrive, check your spam or junk folder.
-
-- Open the published website and choose Create account. Register with your own name, email and password; registration signs you in immediately and does not require email verification.
-- Choose Create portfolio, enter the profile and portfolio information, and save. Add education, skills, projects, work experience, social links, a profile picture and project screenshots as needed.
-- Choose Simple, Modern or Creative, generate the portfolio, then refresh the preview to confirm the saved information persists.
-- Use Edit portfolio to change and save information. Use Delete and confirm the prompt to remove the portfolio and its linked rows.
-- In the Supabase dashboard, open the StuDyIo project and Table Editor. Check public.portfolios and its child tables after saving; templates should contain exactly simple, modern and creative. After deletion, the portfolio and cascade-linked rows should be gone. The app database connection can access rows server-side; Supabase browser API roles have no RLS policies.
-
-No throwaway demo login is published. Optional project notes: [build history](docs/build-history.md) and [design system](docs/design-system.md).
