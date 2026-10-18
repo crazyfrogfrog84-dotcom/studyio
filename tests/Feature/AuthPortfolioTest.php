@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Portfolio;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -85,5 +86,38 @@ class AuthPortfolioTest extends TestCase
 
         $owner->delete();
         $this->assertDatabaseMissing('portfolios', ['id' => $portfolio->id]);
+    }
+
+    public function test_all_three_templates_render_without_empty_sections(): void
+    {
+        $owner = User::create([
+            'name' => 'Template Reviewer',
+            'email' => 'templates@example.net',
+            'password' => 'ReviewTest42',
+        ]);
+
+        foreach (['simple', 'modern', 'creative'] as $index => $slug) {
+            $template = Template::create([
+                'slug' => $slug,
+                'name' => ucfirst($slug),
+                'description' => $slug.' portfolio layout',
+                'sort_order' => $index,
+            ]);
+            $portfolio = Portfolio::create([
+                'user_id' => $owner->id,
+                'template_id' => $template->id,
+                'full_name' => 'Taylor Morgan',
+                'email' => 'taylor@example.net',
+            ]);
+
+            $this->actingAs($owner)
+                ->get(route('portfolios.show', $portfolio))
+                ->assertOk()
+                ->assertSee('template-'.$slug)
+                ->assertDontSee('id="projects"')
+                ->assertDontSee('id="skills"')
+                ->assertDontSee('id="experience"')
+                ->assertDontSee('id="education"');
+        }
     }
 }
