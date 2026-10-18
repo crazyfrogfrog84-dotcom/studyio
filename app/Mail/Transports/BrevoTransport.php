@@ -3,6 +3,7 @@
 namespace App\Mail\Transports;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Mailer\SentMessage;
@@ -53,6 +54,8 @@ class BrevoTransport extends AbstractTransport
             ->timeout($this->timeout)
             ->post($this->endpoint, $payload)
             ->throw();
+
+        Log::info('Brevo accepted a StuDyIo email.');
     }
 
     public function __toString(): string

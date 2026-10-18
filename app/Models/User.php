@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -40,7 +41,13 @@ class User extends Authenticatable
 
                 Mail::mailer('brevo')->to($email)->send(new PasswordResetMail($resetUrl));
             } catch (\Throwable $exception) {
-                Log::error('Password reset email delivery failed.', ['exception' => $exception::class]);
+                $context = ['exception' => $exception::class];
+
+                if ($exception instanceof RequestException) {
+                    $context['http_status'] = $exception->response->status();
+                }
+
+                Log::error('Password reset email delivery failed.', $context);
             }
         });
     }

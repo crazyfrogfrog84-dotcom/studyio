@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Tests\TestCase;
@@ -155,6 +156,31 @@ class PasswordResetFlowTest extends TestCase
                 && $request['sender']['email'] === 'noreply@example.test'
                 && $request['to'][0]['email'] === 'maya@example.test'
                 && isset($request['htmlContent'], $request['textContent']);
+        });
+    }
+
+    public function test_brevo_rejection_is_logged_with_status_without_changing_the_generic_response(): void
+    {
+        $user = User::factory()->create(['email' => 'maya@example.test']);
+        Http::preventStrayRequests();
+        Http::fake(['https://api.brevo.com/v3/smtp/email' => Http::response(['message' => 'Private provider response'], 401)]);
+        config([
+            'mail.mailers.brevo.key' => 'test-api-key',
+            'mail.mailers.brevo.endpoint' => 'https://api.brevo.com/v3/smtp/email',
+            'mail.from.address' => 'noreply@example.test',
+            'mail.from.name' => 'StuDyIo',
+        ]);
+        Log::spy();
+
+        $this->from(route('password.request'))
+            ->post(route('password.email'), ['email' => $user->email])
+            ->assertRedirect(route('password.request'))
+            ->assertSessionHas('status', self::GENERIC_STATUS);
+
+        Log::shouldHaveReceived('error')->once()->withArgs(function (string $message, array $context): bool {
+            return $message === 'Password reset email delivery failed.'
+                && ($context['http_status'] ?? null) === 401
+                && ! str_contains(json_encode($context), 'Private provider response');
         });
     }
 }
