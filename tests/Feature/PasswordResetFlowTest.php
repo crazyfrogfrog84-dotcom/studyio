@@ -47,7 +47,8 @@ class PasswordResetFlowTest extends TestCase
         Mail::assertSent(PasswordResetMail::class, function (PasswordResetMail $mail) use ($user): bool {
             return $mail->hasTo($user->email)
                 && str_contains($mail->resetUrl, '/reset-password/')
-                && str_contains($mail->resetUrl, 'email=maya%40example.test');
+                && str_contains($mail->resetUrl, 'email=maya%40example.test')
+                && str_contains($mail->render(), '60 minutes');
         });
     }
 
@@ -90,7 +91,7 @@ class PasswordResetFlowTest extends TestCase
 
         $this->from(route('password.reset', ['token' => $token, 'email' => $user->email]))
             ->post(route('password.update'), $payload)
-            ->assertSessionHasErrors('email');
+            ->assertSessionHasErrors(['email' => 'This password reset token is invalid.']);
     }
 
     public function test_expired_reset_link_is_rejected_after_sixty_minutes(): void
@@ -109,7 +110,7 @@ class PasswordResetFlowTest extends TestCase
                     'password' => 'NewPortfolioPassword456!',
                     'password_confirmation' => 'NewPortfolioPassword456!',
                 ])
-                ->assertSessionHasErrors('email');
+                ->assertSessionHasErrors(['email' => 'This password reset token is invalid.']);
 
             $this->assertTrue(Hash::check('OldPortfolioPassword123!', $user->fresh()->password));
             Mail::assertNothingOutgoing();
