@@ -143,6 +143,9 @@ h1, h2, h3, .manage-card h2 { color: var(--studio-text); }
 .auth-form-wrap h2, .auth-form-intro, .auth-switch { color: var(--studio-text); }
 .auth-form-intro { color: var(--studio-muted); }
 .auth-switch a { color: var(--studio-accent-strong); text-decoration: underline; text-underline-offset: 3px; }
+.auth-forgot-wrap { margin: -4px 0 2px; text-align: right; }
+.auth-forgot-link { color: var(--studio-accent-strong); font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.auth-forgot-link:hover { color: var(--studio-text); }
 .auth-remember { color: var(--studio-muted); }
 .auth-remember input { accent-color: var(--studio-accent-strong); }
 .preview-toolbar { align-items: center; }

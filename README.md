@@ -1,5 +1,10 @@
 # StuDyIo
 
+## Project Documentation
+
+- [Download the Word documentation](docs/StuDyIo-Documentation.docx)
+- [Download the PDF documentation](docs/StuDyIo-Documentation.pdf)
+
 ## Project Title
 
 **StuDyIo** — Turn your student experience into a portfolio worth sharing.
@@ -15,6 +20,7 @@ StuDyIo helps students create an online portfolio from their education, skills, 
 - Tailwind CSS 4.3 and Vite 8.3
 - PostgreSQL on Supabase
 - Supabase Storage
+- Brevo transactional email over HTTPS for password recovery
 - Docker
 - Render
 - Git and GitHub
@@ -246,17 +252,75 @@ Deleting a user deletes their portfolios and the linked education, skills, proje
 
 ## Screenshots of the System
 
-Live-site screenshots belong in docs/screenshots/: Home, Register, Login, Portfolio Information form, Template Selection, Portfolio Preview, Manage Portfolio and the Supabase Table Editor. The live captures have not been added yet because browser access is disabled in this workspace. No screenshots are fabricated or taken from a local mockup.
+Screenshots were captured from the published site using the seeded demo portfolio. The Supabase Table Editor capture shows the three public template rows.
+
+**Home**
+
+![StuDyIo home page](docs/screenshots/home.jpg)
+
+**Register**
+
+![StuDyIo registration page](docs/screenshots/register.jpg)
+
+**Login**
+
+![StuDyIo login page](docs/screenshots/login.jpg)
+
+**Forgot Password**
+
+![StuDyIo forgot password page](docs/screenshots/forgot-password.jpg)
+
+**Reset Password**
+
+![StuDyIo reset password page](docs/screenshots/reset-password.jpg)
+
+**Portfolio Information form**
+
+![Portfolio information form](docs/screenshots/portfolio-information.jpg)
+
+**Template Selection**
+
+![Template selection page](docs/screenshots/template-selection.jpg)
+
+**Portfolio Preview**
+
+![Portfolio preview](docs/screenshots/portfolio-preview.jpg)
+
+**Manage Portfolio**
+
+![Manage portfolio page](docs/screenshots/manage-portfolio.jpg)
+
+**Supabase Table Editor**
+
+![Supabase Table Editor showing the public templates rows](docs/screenshots/supabase-table-editor.jpg)
 
 ## Screenshots of the 3 Templates
 
-The required light and dark screenshots for Simple, Modern and Creative will be added to docs/screenshots/ after the live browser review. The requested 360px, 768px and 1280px viewport captures are also pending that review.
+**Simple**
+
+| Light mode | Dark mode |
+| --- | --- |
+| ![Simple template in light mode](docs/screenshots/simple-light.jpg) | ![Simple template in dark mode](docs/screenshots/simple-dark.jpg) |
+
+**Modern**
+
+| Light mode | Dark mode |
+| --- | --- |
+| ![Modern template in light mode](docs/screenshots/modern-light.jpg) | ![Modern template in dark mode](docs/screenshots/modern-dark.jpg) |
+
+**Creative**
+
+| Light mode | Dark mode |
+| --- | --- |
+| ![Creative template in light mode](docs/screenshots/creative-light.jpg) | ![Creative template in dark mode](docs/screenshots/creative-dark.jpg) |
 
 ## Published Website URL
 
 [https://studyio-portfolio.onrender.com](https://studyio-portfolio.onrender.com)
 
 ## Testing the system
+
+If a password reset email does not arrive, check your spam or junk folder.
 
 - Open the published website and choose Create account. Register with your own name, email and password; registration signs you in immediately and does not require email verification.
 - Choose Create portfolio, enter the profile and portfolio information, and save. Add education, skills, projects, work experience, social links, a profile picture and project screenshots as needed.

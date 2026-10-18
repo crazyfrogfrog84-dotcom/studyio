@@ -23,6 +23,7 @@
                 @csrf
                 <label class="field"><span>Email address</span><input type="email" name="email" value="{{ old('email') }}" autocomplete="email" required autofocus>@error('email')<small class="field-error">{{ $message }}</small>@enderror</label>
                 <label class="field"><span>Password</span><input type="password" name="password" autocomplete="current-password" required>@error('password')<small class="field-error">{{ $message }}</small>@enderror</label>
+                <p class="auth-forgot-wrap"><a class="auth-forgot-link" href="{{ route('password.request') }}">Forgot your password?</a></p>
                 <label class="auth-remember"><input type="checkbox" name="remember" value="1"> Keep me signed in</label>
                 <button class="button button-primary auth-submit" type="submit">Log in <span aria-hidden="true">↗</span></button>
             </form>
