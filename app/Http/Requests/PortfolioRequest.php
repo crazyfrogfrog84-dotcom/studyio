@@ -9,7 +9,11 @@ class PortfolioRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        if ($this->isMethod('POST')) {
+            return $this->user()?->can('create', \App\Models\Portfolio::class) ?? false;
+        }
+
+        return $this->user()?->can('update', $this->route('portfolio')) ?? false;
     }
 
     public function rules(): array

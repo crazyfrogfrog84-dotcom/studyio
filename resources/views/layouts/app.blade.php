@@ -16,8 +16,15 @@
             <a class="brand" href="{{ route('home') }}" aria-label="StuDyIo home"><span class="brand-mark">S</span><span>StuDyIo</span></a>
             <nav aria-label="Main navigation">
                 <a href="{{ route('home') }}" @class(['active' => request()->routeIs('home')])>Home</a>
-                <a href="{{ route('portfolios.index') }}" @class(['active' => request()->routeIs('portfolios.index')])>My portfolios</a>
-                <a class="nav-create" href="{{ route('portfolios.create') }}">Create portfolio <span aria-hidden="true">↗</span></a>
+                @auth
+                    <a href="{{ route('portfolios.index') }}" @class(['active' => request()->routeIs('portfolios.index')])>My portfolios</a>
+                    <a class="nav-create" href="{{ route('portfolios.create') }}">Create portfolio <span aria-hidden="true">↗</span></a>
+                    <span class="nav-user">{{ auth()->user()->name }}</span>
+                    <form class="nav-logout" method="POST" action="{{ route('logout') }}">@csrf<button type="submit">Sign out</button></form>
+                @else
+                    <a href="{{ route('login') }}" @class(['active' => request()->routeIs('login')])>Log in</a>
+                    <a class="nav-create" href="{{ route('register') }}">Create account</a>
+                @endauth
             </nav>
         </div>
     </header>

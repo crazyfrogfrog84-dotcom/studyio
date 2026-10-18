@@ -19,13 +19,16 @@ class PortfolioController extends Controller
 
     public function index(): View
     {
-        $portfolios = Portfolio::with('template')->latest()->paginate(12);
+        $this->authorize('viewAny', Portfolio::class);
+        $portfolios = request()->user()->portfolios()->with('template')->latest()->paginate(12);
 
         return view('portfolios.index', compact('portfolios'));
     }
 
     public function create(): View
     {
+        $this->authorize('create', Portfolio::class);
+
         return view('portfolios.form', ['portfolio' => new Portfolio, 'pictureUrl' => null, 'projectImageUrls' => []]);
     }
 
@@ -43,8 +46,8 @@ class PortfolioController extends Controller
             }
         }
 
-        $portfolio = DB::transaction(function () use ($data, $profilePicturePath, $projectFiles) {
-            $portfolio = Portfolio::create([
+        $portfolio = DB::transaction(function () use ($request, $data, $profilePicturePath, $projectFiles) {
+            $portfolio = $request->user()->portfolios()->create([
                 ...Arr::only($data, ['full_name', 'email', 'contact_number', 'address', 'about_me']),
                 'profile_picture_path' => $profilePicturePath,
             ]);
@@ -58,6 +61,8 @@ class PortfolioController extends Controller
 
     public function show(Portfolio $portfolio): View
     {
+        $this->authorize('view', $portfolio);
+
         $portfolio->load(['template', 'education', 'skills', 'projects', 'workExperiences', 'socialLinks']);
         $pictureUrl = $this->storage->signedUrl($portfolio->profile_picture_path);
         $projectImageUrls = $portfolio->projects->mapWithKeys(fn ($project) => [$project->screenshot_path => $this->storage->signedUrl($project->screenshot_path)])->all();
@@ -67,6 +72,8 @@ class PortfolioController extends Controller
 
     public function edit(Portfolio $portfolio): View
     {
+        $this->authorize('update', $portfolio);
+
         $portfolio->load(['education', 'skills', 'projects', 'workExperiences', 'socialLinks']);
         $pictureUrl = $this->storage->signedUrl($portfolio->profile_picture_path);
         $projectImageUrls = $portfolio->projects->mapWithKeys(fn ($project) => [$project->screenshot_path => $this->storage->signedUrl($project->screenshot_path)])->all();
@@ -76,11 +83,15 @@ class PortfolioController extends Controller
 
     public function confirmDelete(Portfolio $portfolio): View
     {
+        $this->authorize('delete', $portfolio);
+
         return view('portfolios.confirm-delete', compact('portfolio'));
     }
 
     public function update(PortfolioRequest $request, Portfolio $portfolio): RedirectResponse
     {
+        $this->authorize('update', $portfolio);
+
         $data = $request->validated();
         $oldPaths = [];
         $profilePicturePath = $portfolio->profile_picture_path;
@@ -118,6 +129,8 @@ class PortfolioController extends Controller
 
     public function destroy(Portfolio $portfolio): RedirectResponse
     {
+        $this->authorize('delete', $portfolio);
+
         $portfolio->load('projects');
         $paths = [$portfolio->profile_picture_path, ...$portfolio->projects->pluck('screenshot_path')->all()];
         $portfolio->delete();
@@ -128,6 +141,8 @@ class PortfolioController extends Controller
 
     public function templates(Portfolio $portfolio): View
     {
+        $this->authorize('view', $portfolio);
+
         $templates = Template::orderBy('sort_order')->get();
 
         return view('portfolios.templates', compact('portfolio', 'templates'));
@@ -135,6 +150,8 @@ class PortfolioController extends Controller
 
     public function selectTemplate(Request $request, Portfolio $portfolio): RedirectResponse
     {
+        $this->authorize('update', $portfolio);
+
         $validated = $request->validate(['template_id' => ['required', 'integer', 'exists:templates,id']]);
         $portfolio->update(['template_id' => $validated['template_id']]);
 

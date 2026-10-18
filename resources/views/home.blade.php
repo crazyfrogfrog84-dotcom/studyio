@@ -10,9 +10,9 @@
         <p class="hero-intro">Bring your education, projects and experience together in one portfolio you can share with confidence.</p>
         <div class="hero-actions">
             <a class="button button-primary" href="{{ route('portfolios.create') }}">Create portfolio <span aria-hidden="true">↗</span></a>
-            <a class="text-link" href="{{ route('portfolios.index') }}">Manage saved portfolios <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="{{ route('login') }}">Already have an account? Log in <span aria-hidden="true">→</span></a>
         </div>
-        <p class="hero-note"><span class="status-dot"></span> No account needed · Save and edit any time</p>
+        <p class="hero-note"><span class="status-dot"></span> Your work stays with your account · Edit any time</p>
     </div>
     <div class="hero-art" aria-hidden="true">
         <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>

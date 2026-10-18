@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Portfolio extends Model
 {
     protected $fillable = [
+        'user_id',
         'full_name',
         'profile_picture_path',
         'email',
@@ -17,6 +18,11 @@ class Portfolio extends Model
         'about_me',
         'template_id',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function education(): HasMany
     {
