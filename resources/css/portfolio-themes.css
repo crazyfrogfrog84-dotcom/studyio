@@ -69,8 +69,9 @@
     --modern-mesh-one: rgba(65, 188, 163, .36);
     --modern-mesh-two: rgba(207, 132, 74, .21);
 }
-.modern-layout .modern-sidebar, .modern-layout .modern-about, .modern-layout .modern-section, .modern-layout .modern-project-card, .modern-layout .modern-skill { border-color: var(--modern-line); color: var(--modern-text); box-shadow: var(--modern-shadow); }
+.modern-layout .modern-sidebar, .modern-layout .modern-about, .modern-layout .modern-section, .modern-layout .modern-project-card, .modern-layout .modern-skill { border: 1px solid var(--modern-line); color: var(--modern-text); box-shadow: var(--modern-shadow); }
 .modern-layout .modern-main { background: radial-gradient(ellipse at 92% 35%, var(--modern-mesh-one), transparent 31%), radial-gradient(ellipse at 6% 73%, var(--modern-mesh-two), transparent 34%), var(--modern-bg); }
+.modern-layout .modern-about, .modern-layout .modern-section, .modern-layout .modern-project-card, .modern-layout .modern-skill { background: var(--modern-surface); }
 .modern-layout .modern-sidebar { background: var(--modern-sidebar-surface); }
 .modern-layout .modern-profile { border-color: var(--modern-line); }
 .modern-layout .modern-profile img, .modern-layout .modern-avatar { border-color: var(--modern-line); }
