@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (DB::connection()->getDriverName() !== 'pgsql') {
+            return;
+        }
+
         DB::unprepared(<<<'SQL'
             DO $$
             DECLARE
@@ -54,6 +58,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (DB::connection()->getDriverName() !== 'pgsql') {
+            return;
+        }
+
         DB::unprepared(<<<'SQL'
             ALTER TABLE public.cache DISABLE ROW LEVEL SECURITY;
             ALTER TABLE public.cache_locks DISABLE ROW LEVEL SECURITY;
