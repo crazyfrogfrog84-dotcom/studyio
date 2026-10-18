@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . .
 RUN npm ci && npm run build
 
-FROM php:8.3-apache
+FROM php:8.4-apache
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public \
     PORT=10000
