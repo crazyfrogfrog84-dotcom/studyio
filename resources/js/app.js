@@ -1,3 +1,33 @@
+const root = document.documentElement;
+const themeButtons = document.querySelectorAll('[data-theme-toggle]');
+const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+function setTheme(theme, remember = true) {
+    root.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#101713' : '#f3f1e8');
+    themeButtons.forEach((button) => {
+        button.setAttribute('title', `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`);
+        button.setAttribute('aria-pressed', String(theme === 'dark'));
+    });
+
+    if (remember) {
+        try { localStorage.setItem('studyio-theme', theme); } catch (_) {}
+    }
+}
+
+setTheme(root.dataset.theme || (systemTheme.matches ? 'dark' : 'light'), false);
+themeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
+    });
+});
+
+systemTheme.addEventListener?.('change', (event) => {
+    let saved = null;
+    try { saved = localStorage.getItem('studyio-theme'); } catch (_) {}
+    if (saved !== 'light' && saved !== 'dark') setTheme(event.matches ? 'dark' : 'light', false);
+});
+
 document.addEventListener('click', (event) => {
     const addButton = event.target.closest('[data-add-item]');
     if (addButton) {

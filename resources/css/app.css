@@ -915,3 +915,13 @@ details[open] > summary .summary-caret { transform: rotate(45deg); }
     .template-creative .preview-about, .template-creative .preview-links { margin-left: 0; }
     .template-creative .portfolio-cover::after { right: -160px; bottom: -170px; }
 }
+
+@theme inline {
+    --color-studio-background: var(--studio-background);
+    --color-studio-surface: var(--studio-surface);
+    --color-studio-glass: var(--studio-glass);
+    --color-studio-border: var(--studio-border);
+    --color-studio-text: var(--studio-text);
+    --color-studio-muted: var(--studio-muted);
+    --color-studio-accent: var(--studio-accent);
+}

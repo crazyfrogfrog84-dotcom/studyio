@@ -22,6 +22,7 @@
 <div class="preview-toolbar">
     <a class="back-link" href="{{ route('portfolios.index') }}">← Manage portfolios</a>
     <div>
+        @include('components.theme-toggle')
         <a class="button button-small button-quiet" href="{{ route('portfolios.templates.edit', $portfolio) }}">Change template</a>
         <a class="button button-small button-dark" href="{{ route('portfolios.edit', $portfolio) }}">Edit portfolio</a>
         <a class="button button-small button-danger" href="{{ route('portfolios.confirm-delete', $portfolio) }}">Delete</a>
