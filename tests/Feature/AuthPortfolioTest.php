@@ -120,4 +120,64 @@ class AuthPortfolioTest extends TestCase
                 ->assertDontSee('id="education"');
         }
     }
+
+    public function test_project_images_can_only_be_retained_from_the_current_portfolio(): void
+    {
+        $owner = User::create([
+            'name' => 'Image Owner',
+            'email' => 'images@example.net',
+            'password' => 'ImageTest42',
+        ]);
+        $otherOwner = User::create([
+            'name' => 'Other Owner',
+            'email' => 'other-images@example.net',
+            'password' => 'OtherImageTest42',
+        ]);
+        $portfolio = $owner->portfolios()->create([
+            'full_name' => 'Image Owner',
+            'email' => 'portfolio-images@example.net',
+        ]);
+        $ownProject = $portfolio->projects()->create([
+            'title' => 'My project',
+            'screenshot_path' => 'projects/owned-image.png',
+            'tags' => [],
+            'sort_order' => 0,
+        ]);
+        $foreignPortfolio = $otherOwner->portfolios()->create([
+            'full_name' => 'Other Owner',
+            'email' => 'foreign-portfolio@example.net',
+        ]);
+        $foreignProject = $foreignPortfolio->projects()->create([
+            'title' => 'Other project',
+            'screenshot_path' => 'projects/foreign-image.png',
+            'tags' => [],
+            'sort_order' => 0,
+        ]);
+
+        $this->actingAs($owner)
+            ->put(route('portfolios.update', $portfolio), [
+                'full_name' => 'Image Owner',
+                'email' => 'portfolio-images@example.net',
+                'projects' => [
+                    ['id' => $ownProject->id, 'title' => 'Updated project', 'screenshot_path' => 'projects/forged-image.png'],
+                    ['id' => $foreignProject->id, 'title' => 'Copied project', 'screenshot_path' => 'projects/foreign-image.png'],
+                ],
+            ])
+            ->assertRedirect(route('portfolios.show', $portfolio));
+
+        $this->assertDatabaseHas('projects', [
+            'portfolio_id' => $portfolio->id,
+            'title' => 'Updated project',
+            'screenshot_path' => 'projects/owned-image.png',
+        ]);
+        $this->assertDatabaseHas('projects', [
+            'portfolio_id' => $portfolio->id,
+            'title' => 'Copied project',
+            'screenshot_path' => null,
+        ]);
+        $this->assertDatabaseHas('projects', [
+            'portfolio_id' => $foreignPortfolio->id,
+            'screenshot_path' => 'projects/foreign-image.png',
+        ]);
+    }
 }

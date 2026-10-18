@@ -108,16 +108,17 @@ class PortfolioController extends Controller
             }
         }
 
-        foreach ($portfolio->projects as $project) {
-            $oldPaths[] = $project->screenshot_path;
+        $existingProjectImages = $portfolio->projects()->pluck('screenshot_path', 'id')->all();
+        foreach ($existingProjectImages as $path) {
+            $oldPaths[] = $path;
         }
 
-        DB::transaction(function () use ($portfolio, $data, $profilePicturePath, $projectFiles, &$oldPaths) {
+        DB::transaction(function () use ($portfolio, $data, $profilePicturePath, $projectFiles, $existingProjectImages, &$oldPaths) {
             $portfolio->update([
                 ...Arr::only($data, ['full_name', 'email', 'contact_number', 'address', 'about_me']),
                 'profile_picture_path' => $profilePicturePath,
             ]);
-            $this->syncDetails($portfolio, $data, $projectFiles, $oldPaths);
+            $this->syncDetails($portfolio, $data, $projectFiles, $existingProjectImages, $oldPaths);
         });
 
         $portfolio->load('projects');
@@ -158,7 +159,7 @@ class PortfolioController extends Controller
         return redirect()->route('portfolios.show', $portfolio)->with('status', 'Template applied. Your portfolio is ready to preview.');
     }
 
-    private function syncDetails(Portfolio $portfolio, array $data, array $projectFiles, array &$oldPaths = []): void
+    private function syncDetails(Portfolio $portfolio, array $data, array $projectFiles, array $existingProjectImages = [], array &$oldPaths = []): void
     {
         foreach ([
             'education' => ['institution', 'qualification', 'field_of_study', 'start_date', 'end_date', 'description'],
@@ -183,7 +184,8 @@ class PortfolioController extends Controller
             if (blank($row['title'] ?? null)) {
                 continue;
             }
-            $path = $projectFiles[$index] ?? ($row['screenshot_path'] ?? null);
+            $existingPath = $existingProjectImages[(int) ($row['id'] ?? 0)] ?? null;
+            $path = $projectFiles[$index] ?? $existingPath;
             $tags = collect(explode(',', $row['tags'] ?? ''))
                 ->map(fn ($tag) => trim($tag))
                 ->filter()
