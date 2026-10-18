@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "studyio/studyio",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "StuDyIo portfolio template generator built with Laravel, Blade and Supabase.",
+    "keywords": ["studyio", "portfolio", "laravel", "supabase"],
     "license": "MIT",
     "require": {
         "php": "^8.3",
