@@ -23,12 +23,12 @@
 <body>
     <header class="site-header">
         <div class="nav-wrap">
-            <a class="brand" href="{{ route('home') }}" aria-label="StuDyIo home"><span class="brand-mark">S</span><span>StuDyIo</span></a>
+            <a class="brand" href="{{ route('home') }}" aria-label="StuDyIo home"><span class="brand-mark" aria-hidden="true">S</span></a>
             <nav aria-label="Main navigation">
                 <a href="{{ route('home') }}" @class(['active' => request()->routeIs('home')])>Home</a>
                 @auth
                     <a href="{{ route('portfolios.index') }}" @class(['active' => request()->routeIs('portfolios.index')])>My portfolios</a>
-                    <a class="nav-create" href="{{ route('portfolios.create') }}">Create portfolio <span aria-hidden="true">↗</span></a>
+                    <a class="nav-create" href="{{ route('portfolios.create') }}">Create portfolio</a>
                     <span class="nav-user">{{ auth()->user()->name }}</span>
                     <form class="nav-logout" method="POST" action="{{ route('logout') }}">@csrf<button type="submit">Sign out</button></form>
                 @else
@@ -39,7 +39,7 @@
             </nav>
         </div>
     </header>
-    <main class="page-shell">
+    <main @class(['page-shell', 'page-shell-home' => request()->routeIs('home')])>
         @if (session('status'))
             <div class="notice" role="status">{{ session('status') }}</div>
         @endif
@@ -48,6 +48,6 @@
         @endif
         @yield('content')
     </main>
-    <footer class="site-footer"><span>StuDyIo</span><span>Make your work easy to share.</span></footer>
+    <footer class="site-footer"><span class="brand-mark" role="img" aria-label="StuDyIo">S</span><span>Make your work easy to share.</span></footer>
 </body>
 </html>

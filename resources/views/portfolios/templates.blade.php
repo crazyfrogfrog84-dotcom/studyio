@@ -4,10 +4,10 @@
 
 @section('content')
 <section class="form-heading template-heading">
-    <a class="back-link" href="{{ route('portfolios.edit', $portfolio) }}">← Edit your information</a>
+    <a class="back-link" href="{{ route('portfolios.edit', $portfolio) }}">Edit your information</a>
     <p class="eyebrow">One last touch</p>
     <h1>Choose your layout</h1>
-    <p>Pick the style that feels like you. You can change it later.</p>
+    <p>Preview saves your choice. You can change it any time.</p>
 </section>
 <form method="POST" action="{{ route('portfolios.templates.update', $portfolio) }}">
     @csrf @method('PUT')
@@ -30,6 +30,6 @@
         @endforeach
     </div>
     @error('template_id')<p class="field-error template-error">{{ $message }}</p>@enderror
-    <div class="form-actions template-actions"><a class="button button-quiet" href="{{ route('portfolios.index') }}">Save for later</a><button class="button button-primary" type="submit">Preview portfolio <span aria-hidden="true">→</span></button></div>
+    <div class="form-actions template-actions"><a class="button button-quiet" href="{{ route('portfolios.index') }}">Save for later</a><button class="button button-primary" type="submit">Preview portfolio</button></div>
 </form>
 @endsection

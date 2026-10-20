@@ -5,7 +5,7 @@
 @section('content')
 <section class="auth-layout" aria-labelledby="auth-title">
     <div class="auth-story auth-story-register">
-        <a class="auth-story-brand" href="{{ route('home') }}"><span class="brand-mark">S</span> StuDyIo</a>
+        <a class="auth-story-brand" href="{{ route('home') }}" aria-label="StuDyIo home"><span class="brand-mark" aria-hidden="true">S</span></a>
         <div class="auth-story-copy">
             <p class="eyebrow">Start with your story</p>
             <h1>Your next chapter<br><em>starts here.</em></h1>
@@ -26,7 +26,7 @@
                 <label class="field"><span>Email address</span><input type="email" name="email" value="{{ old('email') }}" autocomplete="email" maxlength="255" required>@error('email')<small class="field-error">{{ $message }}</small>@enderror</label>
                 <label class="field"><span>Password</span><input type="password" name="password" autocomplete="new-password" required><small>Use at least 8 characters.</small>@error('password')<small class="field-error">{{ $message }}</small>@enderror</label>
                 <label class="field"><span>Confirm password</span><input type="password" name="password_confirmation" autocomplete="new-password" required>@error('password_confirmation')<small class="field-error">{{ $message }}</small>@enderror</label>
-                <button class="button button-primary auth-submit" type="submit">Create account <span aria-hidden="true">↗</span></button>
+                <button class="button button-primary auth-submit" type="submit">Create account</button>
             </form>
             <p class="auth-switch">Already have an account? <a href="{{ route('login') }}">Log in</a></p>
         </div>

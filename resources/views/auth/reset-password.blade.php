@@ -5,7 +5,7 @@
 @section('content')
 <section class="auth-layout" aria-labelledby="auth-title">
     <div class="auth-story">
-        <a class="auth-story-brand" href="{{ route('home') }}"><span class="brand-mark">S</span> StuDyIo</a>
+        <a class="auth-story-brand" href="{{ route('home') }}" aria-label="StuDyIo home"><span class="brand-mark" aria-hidden="true">S</span></a>
         <div class="auth-story-copy">
             <p class="eyebrow">One more step</p>
             <h1>Choose a<br><em>new password.</em></h1>
@@ -25,7 +25,7 @@
                 <label class="field"><span>Email address</span><input type="email" name="email" value="{{ old('email', $email) }}" autocomplete="email" maxlength="255" required>@error('email')<small class="field-error">{{ $message }}</small>@enderror</label>
                 <label class="field"><span>New password</span><input type="password" name="password" autocomplete="new-password" required><small>Use at least 8 characters.</small>@error('password')<small class="field-error">{{ $message }}</small>@enderror</label>
                 <label class="field"><span>Confirm new password</span><input type="password" name="password_confirmation" autocomplete="new-password" required>@error('password_confirmation')<small class="field-error">{{ $message }}</small>@enderror</label>
-                <button class="button button-primary auth-submit" type="submit">Save new password <span aria-hidden="true">↗</span></button>
+                <button class="button button-primary auth-submit" type="submit">Save new password</button>
             </form>
             <p class="auth-switch"><a href="{{ route('login') }}">Back to log in</a></p>
         </div>

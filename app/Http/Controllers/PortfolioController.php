@@ -56,6 +56,10 @@ class PortfolioController extends Controller
             return $portfolio;
         });
 
+        if ($request->boolean('save_for_later')) {
+            return redirect()->route('portfolios.index')->with('status', 'Your portfolio has been saved for later.');
+        }
+
         return redirect()->route('portfolios.templates.edit', $portfolio)->with('status', 'Your portfolio is saved. Choose a template to preview it.');
     }
 
@@ -124,6 +128,10 @@ class PortfolioController extends Controller
         $portfolio->load('projects');
         $currentPaths = array_filter([$portfolio->profile_picture_path, ...$portfolio->projects->pluck('screenshot_path')->all()]);
         $this->deleteStoragePaths(array_values(array_diff(array_filter($oldPaths), $currentPaths)));
+
+        if ($request->boolean('save_for_later')) {
+            return redirect()->route('portfolios.index')->with('status', 'Your portfolio has been saved for later.');
+        }
 
         return redirect()->route('portfolios.show', $portfolio)->with('status', 'Your portfolio has been updated.');
     }

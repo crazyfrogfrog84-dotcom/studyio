@@ -11,7 +11,7 @@
     $socialRows = old('social_links', $portfolio->exists ? $portfolio->socialLinks->map(fn ($item) => $item->toArray())->all() : [[]]);
 @endphp
 <section class="form-heading">
-    <a class="back-link" href="{{ $portfolio->exists ? route('portfolios.show', $portfolio) : route('home') }}">← Back</a>
+    <a class="back-link" href="{{ $portfolio->exists ? route('portfolios.show', $portfolio) : route('home') }}">Back</a>
     <p class="eyebrow">{{ $portfolio->exists ? 'Update your details' : 'Start with the essentials' }}</p>
     <h1>{{ $portfolio->exists ? 'Edit your portfolio' : 'Tell your story' }}</h1>
     <p>Add what you have today. You can come back and refine it later.</p>
@@ -26,10 +26,10 @@
         <div class="form-grid">
             <label class="field"><span>Full name <b>*</b></span><input name="full_name" value="{{ old('full_name', $portfolio->full_name) }}" autocomplete="name" required maxlength="160" placeholder="e.g. Sam Rivera">@error('full_name')<small class="field-error">{{ $message }}</small>@enderror</label>
             <label class="field"><span>Email <b>*</b></span><input type="email" name="email" value="{{ old('email', $portfolio->email) }}" autocomplete="email" required maxlength="255" placeholder="sam@example.com">@error('email')<small class="field-error">{{ $message }}</small>@enderror</label>
-            <label class="field"><span>Contact number</span><input name="contact_number" value="{{ old('contact_number', $portfolio->contact_number) }}" autocomplete="tel" maxlength="60" placeholder="+1 555 123 4567">@error('contact_number')<small class="field-error">{{ $message }}</small>@enderror</label>
-            <label class="field"><span>Address</span><input name="address" value="{{ old('address', $portfolio->address) }}" autocomplete="street-address" maxlength="1000" placeholder="City, country">@error('address')<small class="field-error">{{ $message }}</small>@enderror</label>
-            <label class="field field-wide"><span>Profile picture</span><input type="file" name="profile_picture" accept="image/*"><small>JPG, PNG, WebP or another image format · up to 5 MB</small>@if ($pictureUrl)<img class="form-avatar" src="{{ $pictureUrl }}" alt="Current profile picture">@endif @error('profile_picture')<small class="field-error">{{ $message }}</small>@enderror</label>
-            <label class="field field-wide"><span>About me</span><textarea name="about_me" rows="4" maxlength="5000" placeholder="A few lines about what you care about and what you do.">{{ old('about_me', $portfolio->about_me) }}</textarea><small>Keep it focused. A short introduction is easy to read.</small>@error('about_me')<small class="field-error">{{ $message }}</small>@enderror</label>
+            <label class="field"><span>Contact number <b>*</b></span><input name="contact_number" value="{{ old('contact_number', $portfolio->contact_number) }}" autocomplete="tel" inputmode="tel" pattern="[+]?[0-9]+" maxlength="60" placeholder="+15551234567" required><small>Use digits and an optional + at the beginning.</small>@error('contact_number')<small class="field-error">{{ $message }}</small>@enderror</label>
+            <label class="field"><span>Address <b>*</b></span><input name="address" value="{{ old('address', $portfolio->address) }}" autocomplete="street-address" maxlength="1000" placeholder="City, country" required>@error('address')<small class="field-error">{{ $message }}</small>@enderror</label>
+            <label class="field field-wide"><span>Profile picture <b>*</b></span><input type="file" name="profile_picture" accept="image/*" @required(!$portfolio->profile_picture_path)><small>JPG, PNG, WebP or another image format · up to 5 MB</small>@if ($pictureUrl)<img class="form-avatar" src="{{ $pictureUrl }}" alt="Current profile picture">@endif @error('profile_picture')<small class="field-error">{{ $message }}</small>@enderror</label>
+            <label class="field field-wide"><span>About me <b>*</b></span><textarea name="about_me" rows="4" maxlength="5000" placeholder="A few lines about what you care about and what you do." required>{{ old('about_me', $portfolio->about_me) }}</textarea><small>Keep it focused. A short introduction is easy to read.</small>@error('about_me')<small class="field-error">{{ $message }}</small>@enderror</label>
         </div>
     </section>
 
@@ -111,6 +111,6 @@
         <template><div class="repeat-card"><button class="remove-row" type="button" aria-label="Remove link">×</button><div class="form-grid"><label class="field"><span>Platform</span><input name="social_links[__INDEX__][platform]" maxlength="80" placeholder="Website, LinkedIn, GitHub"></label><label class="field"><span>Display label</span><input name="social_links[__INDEX__][label]" maxlength="120" placeholder="My portfolio"></label><label class="field field-wide"><span>URL</span><input type="url" name="social_links[__INDEX__][url]" maxlength="2048" placeholder="https://"></label></div></div></template>
     </details>
 
-    <div class="form-actions"><a class="button button-quiet" href="{{ $portfolio->exists ? route('portfolios.show', $portfolio) : route('home') }}">Cancel</a><button class="button button-primary" type="submit">{{ $portfolio->exists ? 'Save changes' : 'Save and choose a template' }} <span aria-hidden="true">→</span></button></div>
+    <div class="form-actions"><a class="button button-quiet" href="{{ $portfolio->exists ? route('portfolios.show', $portfolio) : route('home') }}">Cancel</a><button class="button button-quiet" type="submit" name="save_for_later" value="1">Save for later</button><button class="button button-primary" type="submit">{{ $portfolio->exists ? 'Save changes' : 'Save and choose a template' }}</button></div>
 </form>
 @endsection

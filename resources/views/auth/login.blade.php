@@ -5,7 +5,7 @@
 @section('content')
 <section class="auth-layout" aria-labelledby="auth-title">
     <div class="auth-story">
-        <a class="auth-story-brand" href="{{ route('home') }}"><span class="brand-mark">S</span> StuDyIo</a>
+        <a class="auth-story-brand" href="{{ route('home') }}" aria-label="StuDyIo home"><span class="brand-mark" aria-hidden="true">S</span></a>
         <div class="auth-story-copy">
             <p class="eyebrow">Your work, in one place</p>
             <h1>Pick up where<br><em>you left off.</em></h1>
@@ -25,7 +25,7 @@
                 <label class="field"><span>Password</span><input type="password" name="password" autocomplete="current-password" required>@error('password')<small class="field-error">{{ $message }}</small>@enderror</label>
                 <p class="auth-forgot-wrap"><a class="auth-forgot-link" href="{{ route('password.request') }}">Forgot your password?</a></p>
                 <label class="auth-remember"><input type="checkbox" name="remember" value="1"> Keep me signed in</label>
-                <button class="button button-primary auth-submit" type="submit">Log in <span aria-hidden="true">↗</span></button>
+                <button class="button button-primary auth-submit" type="submit">Log in</button>
             </form>
             <p class="auth-switch">New to StuDyIo? <a href="{{ route('register') }}">Create an account</a></p>
         </div>

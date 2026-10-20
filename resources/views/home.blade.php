@@ -9,8 +9,8 @@
         <h1>Make your next<br><em>first impression</em>.</h1>
         <p class="hero-intro">Bring your education, projects and experience together in one portfolio you can share with confidence.</p>
         <div class="hero-actions">
-            <a class="button button-primary" href="{{ route('portfolios.create') }}">Create portfolio <span aria-hidden="true">↗</span></a>
-            <a class="text-link" href="{{ route('login') }}">Already have an account? Log in <span aria-hidden="true">→</span></a>
+            <a class="button button-primary" href="{{ route('portfolios.create') }}">Create portfolio</a>
+            <a class="button button-secondary" href="{{ route('login') }}">Log in</a>
         </div>
         <p class="hero-note"><span class="status-dot"></span> Your work stays with your account · Edit any time</p>
     </div>

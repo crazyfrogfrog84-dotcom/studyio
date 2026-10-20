@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Portfolio;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -10,7 +11,7 @@ class PortfolioRequest extends FormRequest
     public function authorize(): bool
     {
         if ($this->isMethod('POST')) {
-            return $this->user()?->can('create', \App\Models\Portfolio::class) ?? false;
+            return $this->user()?->can('create', Portfolio::class) ?? false;
         }
 
         return $this->user()?->can('update', $this->route('portfolio')) ?? false;
@@ -20,11 +21,15 @@ class PortfolioRequest extends FormRequest
     {
         return [
             'full_name' => ['required', 'string', 'max:160'],
-            'profile_picture' => ['nullable', 'image', 'max:5120'],
+            'profile_picture' => [
+                $this->route('portfolio')?->profile_picture_path ? 'nullable' : 'required',
+                'image',
+                'max:5120',
+            ],
             'email' => ['required', 'email', 'max:255'],
-            'contact_number' => ['nullable', 'string', 'max:60'],
-            'address' => ['nullable', 'string', 'max:1000'],
-            'about_me' => ['nullable', 'string', 'max:5000'],
+            'contact_number' => ['required', 'string', 'regex:/^\\+?[0-9]+$/', 'max:60'],
+            'address' => ['required', 'string', 'max:1000'],
+            'about_me' => ['required', 'string', 'max:5000'],
             'education' => ['nullable', 'array', 'max:20'],
             'education.*.institution' => ['nullable', 'string', 'max:180'],
             'education.*.qualification' => ['nullable', 'string', 'max:180'],

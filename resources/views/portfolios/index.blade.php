@@ -5,7 +5,7 @@
 @section('content')
 <section class="page-heading">
     <div><p class="eyebrow">Your work, together</p><h1>My portfolios</h1><p>Open a preview, make an edit, or start something new.</p></div>
-    <a class="button button-primary" href="{{ route('portfolios.create') }}">Create portfolio <span aria-hidden="true">↗</span></a>
+    <a class="button button-primary" href="{{ route('portfolios.create') }}">Create portfolio</a>
 </section>
 
 @if ($portfolios->isEmpty())

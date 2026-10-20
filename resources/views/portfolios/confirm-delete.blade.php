@@ -4,7 +4,7 @@
 
 @section('content')
 <section class="confirm-page">
-    <a class="back-link" href="{{ route('portfolios.show', $portfolio) }}">← Keep portfolio</a>
+    <a class="back-link" href="{{ route('portfolios.show', $portfolio) }}">Keep portfolio</a>
     <p class="eyebrow">Please confirm</p>
     <h1>Delete {{ $portfolio->full_name }}’s portfolio?</h1>
     <p>This also removes its education, skills, projects, work experience and social links.</p>

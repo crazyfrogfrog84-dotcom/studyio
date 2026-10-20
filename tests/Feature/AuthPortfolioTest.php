@@ -121,6 +121,104 @@ class AuthPortfolioTest extends TestCase
         }
     }
 
+    public function test_about_you_fields_are_required_when_creating_a_portfolio(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->from(route('portfolios.create'))
+            ->post(route('portfolios.store'), [])
+            ->assertSessionHasErrors([
+                'full_name' => 'The full name field is required.',
+                'email' => 'The email field is required.',
+                'contact_number' => 'The contact number field is required.',
+                'address' => 'The address field is required.',
+                'profile_picture' => 'The profile picture field is required.',
+                'about_me' => 'The about me field is required.',
+            ]);
+
+        $this->assertDatabaseCount('portfolios', 0);
+    }
+
+    public function test_contact_number_accepts_digits_with_an_optional_leading_plus(): void
+    {
+        $user = User::factory()->create();
+        $portfolio = $user->portfolios()->create([
+            'full_name' => 'Taylor Morgan',
+            'email' => 'taylor@example.net',
+            'profile_picture_path' => 'profiles/taylor.png',
+        ]);
+
+        $this->actingAs($user)
+            ->put(route('portfolios.update', $portfolio), [
+                'full_name' => 'Taylor Morgan',
+                'email' => 'taylor@example.net',
+                'contact_number' => '+886912345678',
+                'address' => 'Taipei',
+                'about_me' => 'A student portfolio introduction.',
+            ])
+            ->assertRedirect(route('portfolios.show', $portfolio));
+
+        $this->assertDatabaseHas('portfolios', [
+            'id' => $portfolio->id,
+            'contact_number' => '+886912345678',
+        ]);
+    }
+
+    public function test_contact_number_rejects_punctuation_and_does_not_update_the_portfolio(): void
+    {
+        $user = User::factory()->create();
+        $portfolio = $user->portfolios()->create([
+            'full_name' => 'Taylor Morgan',
+            'email' => 'taylor@example.net',
+            'profile_picture_path' => 'profiles/taylor.png',
+        ]);
+
+        $this->actingAs($user)
+            ->from(route('portfolios.edit', $portfolio))
+            ->put(route('portfolios.update', $portfolio), [
+                'full_name' => 'Taylor Morgan',
+                'email' => 'taylor@example.net',
+                'contact_number' => '555-1234',
+                'address' => 'Taipei',
+                'about_me' => 'A student portfolio introduction.',
+            ])
+            ->assertSessionHasErrors(['contact_number' => 'The contact number field format is invalid.']);
+
+        $this->assertDatabaseHas('portfolios', [
+            'id' => $portfolio->id,
+            'contact_number' => null,
+        ]);
+    }
+
+    public function test_save_for_later_persists_changes_and_returns_to_portfolio_management(): void
+    {
+        $user = User::factory()->create();
+        $portfolio = $user->portfolios()->create([
+            'full_name' => 'Taylor Morgan',
+            'email' => 'taylor@example.net',
+            'profile_picture_path' => 'profiles/taylor.png',
+        ]);
+
+        $this->actingAs($user)
+            ->put(route('portfolios.update', $portfolio), [
+                'full_name' => 'Taylor Morgan',
+                'email' => 'taylor@example.net',
+                'contact_number' => '886912345678',
+                'address' => 'Taipei',
+                'about_me' => 'A student portfolio introduction.',
+                'save_for_later' => '1',
+            ])
+            ->assertRedirect(route('portfolios.index'))
+            ->assertSessionHas('status', 'Your portfolio has been saved for later.');
+
+        $this->assertDatabaseHas('portfolios', [
+            'id' => $portfolio->id,
+            'contact_number' => '886912345678',
+            'about_me' => 'A student portfolio introduction.',
+        ]);
+    }
+
     public function test_project_images_can_only_be_retained_from_the_current_portfolio(): void
     {
         $owner = User::create([
@@ -136,6 +234,7 @@ class AuthPortfolioTest extends TestCase
         $portfolio = $owner->portfolios()->create([
             'full_name' => 'Image Owner',
             'email' => 'portfolio-images@example.net',
+            'profile_picture_path' => 'profiles/owned-image.png',
         ]);
         $ownProject = $portfolio->projects()->create([
             'title' => 'My project',
@@ -158,6 +257,9 @@ class AuthPortfolioTest extends TestCase
             ->put(route('portfolios.update', $portfolio), [
                 'full_name' => 'Image Owner',
                 'email' => 'portfolio-images@example.net',
+                'contact_number' => '1234567890',
+                'address' => 'Taipei',
+                'about_me' => 'Image owner portfolio introduction.',
                 'projects' => [
                     ['id' => $ownProject->id, 'title' => 'Updated project', 'screenshot_path' => 'projects/forged-image.png'],
                     ['id' => $foreignProject->id, 'title' => 'Copied project', 'screenshot_path' => 'projects/foreign-image.png'],
