@@ -29,7 +29,7 @@
                 @auth
                     <a href="{{ route('portfolios.index') }}" @class(['active' => request()->routeIs('portfolios.index')])>My portfolios</a>
                     <a class="nav-create" href="{{ route('portfolios.create') }}">Create portfolio</a>
-                    <span class="nav-user">{{ auth()->user()->name }}</span>
+                    <span class="nav-profile brand-mark" role="img" aria-label="Signed in as {{ auth()->user()->name }}">S</span>
                     <form class="nav-logout" method="POST" action="{{ route('logout') }}">@csrf<button type="submit">Sign out</button></form>
                 @else
                     <a href="{{ route('login') }}" @class(['active' => request()->routeIs('login')])>Log in</a>

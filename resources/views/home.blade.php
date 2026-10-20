@@ -10,7 +10,7 @@
         <p class="hero-intro">Bring your education, projects and experience together in one portfolio you can share with confidence.</p>
         <div class="hero-actions">
             <a class="button button-primary" href="{{ route('portfolios.create') }}">Create portfolio</a>
-            <a class="button button-secondary" href="{{ route('login') }}">Log in</a>
+            <a class="button button-secondary button-home-login" href="{{ route('login') }}">Log in</a>
         </div>
         <p class="hero-note"><span class="status-dot"></span> Your work stays with your account · Edit any time</p>
     </div>
